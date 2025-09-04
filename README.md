@@ -42,7 +42,7 @@
 ## 📁 Project Structure
 
 ```
-cg_adm/
+ubiquitous/                            # Repository root
 ├── README.md                          # This overview document
 ├── CLAUDE.md                          # Development session guide
 ├── ubiquitous-solution.md             # Detailed solution architecture
@@ -82,16 +82,41 @@ aws configure
 aws sts get-caller-identity
 ```
 
-### Quick Start (Docker Development)
+### 🌟 One-Line Demo Deployment (Recommended)
 ```bash
-cd ubiquitous-poc/
+# Deploy complete demo on any macbook in 5-10 minutes
+curl -sSL https://raw.githubusercontent.com/cdameworth/ubiquitous/main/ubiquitous-poc/remote-deploy.sh | bash
+```
+
+**What this does:**
+- ✅ Auto-installs prerequisites (Homebrew, Docker Desktop)
+- ✅ Clones repository and builds containers
+- ✅ Initializes with 155+ AWS nodes and 90 days of metrics
+- ✅ Creates desktop shortcuts (Start/Stop/Reset)
+- ✅ Opens http://localhost:3000 automatically
+
+### 🛠️ Manual Development Setup
+```bash
+git clone https://github.com/cdameworth/ubiquitous.git
+cd ubiquitous/ubiquitous-poc/
+./quick-deploy.sh --demo
+
+# Or step by step:
 docker-compose up -d
-
-# Initialize databases with test data
 ./scripts/init-all-databases.sh
-
-# Access the platform
 open http://localhost:3000
+```
+
+### 📦 Offline Portable Package
+```bash
+# Create package (on source machine)
+cd ubiquitous-poc/
+./portable-setup.sh create
+
+# Deploy package (on target machine) 
+unzip ~/Desktop/ubiquitous-demo-package.zip
+cd ubiquitous-demo-*/
+./deploy.sh
 ```
 
 ### Production Deployment (Kubernetes)
@@ -263,11 +288,13 @@ The current implementation includes a functional **Wizard of Oz prototype** demo
 
 ## 🔗 Quick Links
 
-- **Live POC**: http://localhost:3000 (after `docker-compose up`)
+- **Quick Deploy**: `curl -sSL https://raw.githubusercontent.com/cdameworth/ubiquitous/main/ubiquitous-poc/remote-deploy.sh | bash`
+- **Live POC**: http://localhost:3000 (after deployment)
 - **API Documentation**: http://localhost:8000/api/docs
 - **Terraform Infrastructure**: [`ubiquitous-poc/terraform/`](./ubiquitous-poc/terraform/)
 - **Architecture Diagrams**: [`generated-diagrams/`](./generated-diagrams/)
 - **Business Case**: [`ubiquitous-business-case.md`](./ubiquitous-business-case.md)
+- **Deployment Guide**: [`ubiquitous-poc/QUICK_DEPLOYMENT.md`](./ubiquitous-poc/QUICK_DEPLOYMENT.md)
 
 ---
 

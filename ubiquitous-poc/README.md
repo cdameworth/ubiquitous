@@ -20,14 +20,50 @@ This POC demonstrates all 9 Ubiquitous capabilities through a realistic AWS envi
 - **Data Generator**: Continuous synthetic data creation
 - **Proxy**: Nginx for production routing
 
-## Quick Start
+## 🚀 Quick Deployment Options
+
+### 🌟 One-Line Remote Deploy (Easiest)
+```bash
+# Deploy complete demo on any macbook in 5-10 minutes
+curl -sSL https://raw.githubusercontent.com/cdameworth/ubiquitous/main/ubiquitous-poc/remote-deploy.sh | bash
+```
+
+**Perfect for:** Presentations, clean machines, first-time users
+
+### 🛠️ Quick Deploy Script (Development)
+```bash
+# If you already have the repository
+./quick-deploy.sh --demo    # Presentation optimized
+./quick-deploy.sh --dev     # Minimal resources
+./quick-deploy.sh --full    # Production-like
+```
+
+**Perfect for:** Developers, testing different configurations
+
+### 📦 Portable Offline Package
+```bash
+# Create package (source machine)
+./portable-setup.sh create
+
+# Deploy package (target machine)
+./portable-setup.sh deploy
+```
+
+**Perfect for:** Offline demos, airgapped environments
+
+### 🖥️ Desktop Controls (Auto-Created)
+After deployment, double-click:
+- **Start Ubiquitous Demo.command** - Start all services
+- **Stop Ubiquitous Demo.command** - Clean shutdown
+- **Reset Ubiquitous Demo.command** - Fresh synthetic data
 
 ### Prerequisites
-- Docker Desktop
+- macOS 10.15+
 - 16GB+ RAM recommended
-- 100GB+ available storage
+- 20GB+ available storage
+- Docker Desktop (auto-installed if needed)
 
-### Development Environment
+### Manual Development Environment
 ```bash
 # Clone and navigate to project
 cd ubiquitous-poc
@@ -56,6 +92,33 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 # Access via nginx proxy
 open http://localhost
 ```
+
+## 🎬 Demo Management
+
+### Desktop Shortcuts (Auto-Created)
+- **Start Ubiquitous Demo.command** - One-click startup
+- **Stop Ubiquitous Demo.command** - Clean shutdown
+- **Reset Ubiquitous Demo.command** - Fresh synthetic data reset
+
+### Deployment Modes
+- **Demo Mode** (`--demo`): Optimized for presentations (default)
+- **Dev Mode** (`--dev`): Minimal resources for development
+- **Full Mode** (`--full`): Production-like environment
+
+### Data Management
+```bash
+# Reset with fresh synthetic data
+docker compose down -v && ./quick-deploy.sh
+
+# Initialize data manually
+docker compose exec datagen python main.py
+
+# Check data status
+curl http://localhost:8000/api/infrastructure/topology | jq '.nodes | length'
+```
+
+### Troubleshooting
+See [`QUICK_DEPLOYMENT.md`](./QUICK_DEPLOYMENT.md) for comprehensive troubleshooting guide.
 
 ## Demo Scenarios
 
