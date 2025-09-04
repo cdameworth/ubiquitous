@@ -1,0 +1,364 @@
+.service-dependency-map-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.service-dependency-svg {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.service-dependency-svg:active {
+  cursor: grabbing;
+}
+
+.service-node {
+  transition: all 0.3s ease;
+}
+
+.service-node:hover {
+  filter: brightness(1.1);
+}
+
+.service-node circle {
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.service-node:hover circle {
+  stroke-width: 4px !important;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
+}
+
+.dependency-link {
+  transition: all 0.3s ease;
+}
+
+.dependency-link:hover path {
+  stroke-width: 6px !important;
+  stroke-opacity: 0.9 !important;
+}
+
+.service-tooltip,
+.dependency-tooltip {
+  position: absolute;
+  background: rgba(15, 23, 42, 0.95);
+  color: white;
+  border-radius: 8px;
+  padding: 0;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  min-width: 220px;
+}
+
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.tooltip-header strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tooltip-type {
+  font-size: 11px;
+  background: rgba(59, 130, 246, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.tooltip-content {
+  padding: 12px 16px;
+}
+
+.tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.tooltip-row:last-child {
+  margin-bottom: 0;
+}
+
+.tooltip-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.tooltip-value {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tooltip-value.status-healthy {
+  color: #86efac;
+}
+
+.tooltip-value.status-degraded {
+  color: #fbbf24;
+}
+
+.tooltip-value.status-down {
+  color: #fca5a5;
+}
+
+.tooltip-value.criticality-low {
+  color: #a3a3a3;
+}
+
+.tooltip-value.criticality-medium {
+  color: #fbbf24;
+}
+
+.tooltip-value.criticality-high {
+  color: #fdba74;
+}
+
+.tooltip-value.criticality-critical {
+  color: #fca5a5;
+}
+
+/* Arrow marker animations */
+marker path {
+  transition: fill 0.3s ease;
+}
+
+/* Service type specific styling */
+.service-node[data-type="database"] circle {
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.3));
+}
+
+.service-node[data-type="external_api"] circle {
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
+}
+
+.service-node[data-criticality="critical"] circle {
+  animation: criticalPulse 2s infinite;
+}
+
+@keyframes criticalPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(220, 38, 38, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(220, 38, 38, 0.8));
+  }
+}
+
+/* Dependency animations */
+.dependency-link[data-type="async"] path {
+  animation: asyncFlow 3s linear infinite;
+}
+
+@keyframes asyncFlow {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* Critical path highlighting */
+.critical-path-node circle {
+  stroke: #fbbf24 !important;
+  stroke-width: 4px !important;
+  filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.6));
+}
+
+.critical-path-link path {
+  stroke: #fbbf24 !important;
+  stroke-width: 4px !important;
+  stroke-opacity: 0.9 !important;
+}
+
+/* Impact analysis mode */
+.impact-analysis .service-node circle {
+  opacity: 0.6;
+}
+
+.impact-analysis .service-node.impact-direct circle {
+  opacity: 1;
+  stroke: #dc2626 !important;
+  stroke-width: 4px !important;
+}
+
+.impact-analysis .service-node.impact-indirect circle {
+  opacity: 0.8;
+  stroke: #f59e0b !important;
+  stroke-width: 3px !important;
+}
+
+/* Loading state */
+.dependency-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6b7280;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dependency-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Controls overlay */
+.dependency-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dependency-control-button {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.dependency-control-button:hover {
+  background: white;
+  border-color: #cbd5e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dependency-control-button.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+/* Legend */
+.dependency-legend {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  max-width: 250px;
+}
+
+.legend-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.legend-section {
+  margin-bottom: 12px;
+}
+
+.legend-section:last-child {
+  margin-bottom: 0;
+}
+
+.legend-section-title {
+  font-weight: 600;
+  font-size: 11px;
+  color: #6b7280;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.legend-item:last-child {
+  margin-bottom: 0;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+  border: 2px solid white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.legend-line {
+  width: 20px;
+  height: 2px;
+  margin-right: 8px;
+  border-radius: 1px;
+}
+
+.legend-icon {
+  font-size: 14px;
+  margin-right: 6px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .service-tooltip,
+  .dependency-tooltip {
+    min-width: 180px;
+  }
+  
+  .tooltip-header {
+    padding: 8px 12px;
+  }
+  
+  .tooltip-content {
+    padding: 8px 12px;
+  }
+  
+  .dependency-legend {
+    font-size: 10px;
+    padding: 8px;
+    max-width: 200px;
+  }
+  
+  .dependency-controls {
+    top: 5px;
+    right: 5px;
+  }
+  
+  .dependency-control-button {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+}

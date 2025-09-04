@@ -1,0 +1,90 @@
+# Docker Compose configuration for testing database connections
+# Extends the main docker-compose.yml for testing purposes
+
+version: '3.8'
+
+services:
+  # Database test runner
+  db-test:
+    build: ./backend
+    command: python scripts/test-databases.py
+    environment:
+      - DATABASE_URL=postgresql://postgres:ubiquitous123@timeseries:5432/ubiquitous
+      - NEO4J_URL=bolt://neo4j:ubiquitous123@graph:7687
+      - REDIS_URL=redis://cache:6379
+      - ENVIRONMENT=test
+    depends_on:
+      timeseries:
+        condition: service_healthy
+      graph:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    volumes:
+      - ./scripts:/app/scripts
+    networks:
+      - ubiquitous-network
+    profiles:
+      - test
+
+  # Neo4j data loader
+  neo4j-init:
+    build: ./backend
+    command: >
+      sh -c "
+        sleep 30 &&
+        python -c \"
+        from neo4j import GraphDatabase;
+        import time;
+        driver = GraphDatabase.driver('bolt://graph:7687', auth=('neo4j', 'ubiquitous123'));
+        time.sleep(10);
+        with driver.session() as session:
+          with open('/app/data/neo4j/init.cypher', 'r') as f:
+            cypher_script = f.read();
+          session.run(cypher_script);
+          print('✅ Neo4j data initialized');
+        driver.close()
+        \"
+      "
+    environment:
+      - NEO4J_URL=bolt://neo4j:ubiquitous123@graph:7687
+    depends_on:
+      graph:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+    networks:
+      - ubiquitous-network
+    profiles:
+      - init
+
+  # TimescaleDB sample data loader
+  timescale-sample:
+    build: ./backend
+    command: >
+      sh -c "
+        sleep 20 &&
+        python -c \"
+        import asyncio;
+        import asyncpg;
+        async def load_sample():
+          conn = await asyncpg.connect('postgresql://postgres:ubiquitous123@timeseries:5432/ubiquitous');
+          await conn.execute('SELECT insert_sample_metrics()');
+          print('✅ TimescaleDB sample data loaded');
+          await conn.close();
+        asyncio.run(load_sample())
+        \"
+      "
+    environment:
+      - DATABASE_URL=postgresql://postgres:ubiquitous123@timeseries:5432/ubiquitous
+    depends_on:
+      timeseries:
+        condition: service_healthy
+    networks:
+      - ubiquitous-network
+    profiles:
+      - sample-data
+
+networks:
+  ubiquitous-network:
+    external: true

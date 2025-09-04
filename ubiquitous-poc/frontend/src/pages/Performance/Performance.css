@@ -1,0 +1,233 @@
+/* Performance Monitoring - Capital Group Professional Style */
+.grafana-performance {
+  background: var(--cg-background);
+  color: var(--cg-gray-dark);
+  min-height: 100vh;
+  font-family: var(--cg-font-primary);
+}
+
+.grafana-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  background: var(--cg-white);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  border-left: 6px solid var(--cg-navy);
+  border: 1px solid var(--cg-gray-lightest);
+}
+
+.grafana-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--cg-navy);
+  letter-spacing: -0.02em;
+}
+
+.time-range-control {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--cg-gray);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.time-range-control select {
+  background: var(--cg-white);
+  border: 2px solid var(--cg-gray-lighter);
+  color: var(--cg-navy);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.time-range-control select:focus {
+  outline: none;
+  border-color: var(--cg-blue);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  color: var(--cg-gray-light);
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+/* 2x2 Grid Layout with Capital Group styling */
+.grafana-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-xl);
+}
+
+.grafana-panel {
+  background: var(--cg-white);
+  border: 1px solid var(--cg-gray-lightest);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  min-height: 280px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.grafana-panel:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.grafana-panel h3 {
+  margin: 0 0 var(--spacing-lg) 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--cg-navy);
+  border-bottom: 2px solid var(--cg-gray-lightest);
+  padding-bottom: var(--spacing-sm);
+}
+
+.grafana-chart {
+  height: 120px;
+  margin: var(--spacing-lg) 0;
+  background: linear-gradient(135deg, #f8faff 0%, var(--cg-white) 100%);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--cg-gray-lightest);
+}
+
+.grafana-chart svg {
+  width: 100%;
+  height: 100%;
+}
+
+.grafana-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--cg-navy);
+  text-align: left;
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background: var(--cg-gray-lightest);
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--cg-blue);
+}
+
+/* Saturation specific styling */
+.saturation-display {
+  margin-top: 1rem;
+}
+
+.saturation-bar-visual {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #52c41a;
+  margin-bottom: 1rem;
+  background: #1a1a1a;
+  padding: 0.5rem;
+  border-radius: 2px;
+}
+
+.saturation-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  color: #b7b7b7;
+}
+
+/* Alert Rules Section */
+.grafana-alerts {
+  background: var(--cg-white);
+  border: 1px solid var(--cg-gray-lightest);
+  border-radius: var(--radius-lg);
+  margin: var(--spacing-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  border-left: 6px solid var(--cg-warning);
+}
+
+.grafana-alerts h3 {
+  margin: 0 0 var(--spacing-lg) 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--cg-navy);
+  border-bottom: 2px solid var(--cg-gray-lightest);
+  padding-bottom: var(--spacing-sm);
+}
+
+.alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.grafana-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+}
+
+.grafana-alert-critical {
+  color: #ff4d4f;
+}
+
+.grafana-alert-warning {
+  color: #faad14;
+}
+
+.alert-icon {
+  min-width: 16px;
+}
+
+.alert-text {
+  color: #ffffff;
+  flex: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grafana-grid {
+    grid-template-columns: 1fr;
+    padding: 0.5rem;
+  }
+  
+  .grafana-header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .grafana-alerts {
+    margin: 0.5rem;
+  }
+}
+
+/* Dark theme scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444444;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}

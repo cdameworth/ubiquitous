@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=/api
+      - REACT_APP_WS_URL=ws://localhost/ws
+    volumes: []
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    environment:
+      - ENVIRONMENT=production
+      - LOG_LEVEL=INFO
+      - DATABASE_URL=postgresql://postgres:ubiquitous123@timeseries:5432/ubiquitous
+      - NEO4J_URL=bolt://neo4j:ubiquitous123@graph:7687
+      - REDIS_URL=redis://cache:6379
+    volumes: []
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+
+  graph:
+    environment:
+      - NEO4J_dbms_memory_heap_initial__size=4G
+      - NEO4J_dbms_memory_heap_max__size=6G
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '2'
+
+  timeseries:
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+          cpus: '2'
+
+  cache:
+    command: redis-server --appendonly yes --maxmemory 2gb --maxmemory-policy allkeys-lru
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+          cpus: '1'
+
+  nginx:
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro

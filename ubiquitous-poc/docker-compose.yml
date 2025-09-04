@@ -1,0 +1,158 @@
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_WS_URL=ws://localhost:8000/ws
+      - NODE_ENV=development
+    depends_on:
+      - api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - ubiquitous-network
+
+  api:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:ubiquitous123@timeseries:5432/ubiquitous
+      - NEO4J_URL=bolt://neo4j:ubiquitous123@graph:7687
+      - REDIS_URL=redis://cache:6379
+      - ENVIRONMENT=development
+    depends_on:
+      - timeseries
+      - graph
+      - cache
+    volumes:
+      - ./backend:/app
+    networks:
+      - ubiquitous-network
+
+  graph:
+    image: neo4j:5.13-community
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/ubiquitous123
+      - NEO4J_PLUGINS=["apoc","graph-data-science"]
+      - NEO4J_dbms_memory_heap_initial__size=2G
+      - NEO4J_dbms_memory_heap_max__size=4G
+      - NEO4J_dbms_security_procedures_unrestricted=gds.*,apoc.*
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_uuid_enabled=true
+    volumes:
+      - graph_data:/data
+      - graph_logs:/logs
+      - ./data/neo4j:/var/lib/neo4j/import
+    networks:
+      - ubiquitous-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p ubiquitous123 'RETURN 1' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  timeseries:
+    image: timescale/timescaledb:latest-pg15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ubiquitous
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=ubiquitous123
+      - POSTGRES_SHARED_PRELOAD_LIBRARIES=timescaledb
+    volumes:
+      - timeseries_data:/var/lib/postgresql/data
+      - ./data/timescaledb:/docker-entrypoint-initdb.d
+    networks:
+      - ubiquitous-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ubiquitous"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  cache:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - cache_data:/data
+      - ./data/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    networks:
+      - ubiquitous-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  datagen:
+    build: ./datagen
+    environment:
+      - DATABASE_URL=postgresql://postgres:ubiquitous123@timeseries:5432/ubiquitous
+      - NEO4J_URL=bolt://neo4j:ubiquitous123@graph:7687
+      - REDIS_URL=redis://cache:6379
+      - REDIS_PASSWORD=ubiquitous_redis_2024
+      - ENVIRONMENT=development
+      - HISTORICAL_DAYS=90
+      - REALTIME_INTERVAL=60
+      - LOG_LEVEL=INFO
+    depends_on:
+      timeseries:
+        condition: service_healthy
+      graph:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    volumes:
+      - ./datagen:/app
+      - datagen_logs:/app/logs
+    networks:
+      - ubiquitous-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "/app/main.py", "--status"]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 120s
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - api
+    networks:
+      - ubiquitous-network
+    profiles:
+      - production
+
+volumes:
+  graph_data:
+  graph_logs:
+  timeseries_data:
+  cache_data:
+  datagen_logs:
+
+networks:
+  ubiquitous-network:
+    driver: bridge

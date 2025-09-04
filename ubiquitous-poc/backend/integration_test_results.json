@@ -1,0 +1,181 @@
+{
+  "started_at": "2025-08-29T16:34:29.972829",
+  "tests": [
+    {
+      "test_name": "Neo4j: Infrastructure Topology",
+      "status": "passed",
+      "details": "Returned valid data structure",
+      "timestamp": "2025-08-29T16:34:30.177863"
+    },
+    {
+      "test_name": "Neo4j: EKS Clusters with Services",
+      "status": "failed",
+      "details": "Invalid data structure",
+      "timestamp": "2025-08-29T16:34:30.187807"
+    },
+    {
+      "test_name": "Neo4j: Service Dependency Map",
+      "status": "failed",
+      "details": "Invalid data structure",
+      "timestamp": "2025-08-29T16:34:30.626850"
+    },
+    {
+      "test_name": "Neo4j: Database Connections",
+      "status": "failed",
+      "details": "Invalid data structure",
+      "timestamp": "2025-08-29T16:34:30.665957"
+    },
+    {
+      "test_name": "Neo4j: Cost Optimization Candidates",
+      "status": "failed",
+      "details": "Invalid data structure",
+      "timestamp": "2025-08-29T16:34:30.674630"
+    },
+    {
+      "test_name": "Neo4j: Critical Path Analysis",
+      "status": "failed",
+      "details": "Invalid data structure",
+      "timestamp": "2025-08-29T16:34:31.310691"
+    },
+    {
+      "test_name": "Neo4j: Network Latency Heatmap Data",
+      "status": "failed",
+      "details": "Invalid data structure",
+      "timestamp": "2025-08-29T16:34:31.405782"
+    },
+    {
+      "test_name": "TimescaleDB: System Metrics Summary",
+      "status": "passed",
+      "details": "Returned valid data structure",
+      "timestamp": "2025-08-29T16:34:31.415996"
+    },
+    {
+      "test_name": "TimescaleDB: Service Performance Trend",
+      "status": "passed",
+      "details": "Returned valid data structure",
+      "timestamp": "2025-08-29T16:34:31.420078"
+    },
+    {
+      "test_name": "TimescaleDB: Database Performance Metrics",
+      "status": "failed",
+      "details": "Invalid data structure",
+      "timestamp": "2025-08-29T16:34:31.422517"
+    },
+    {
+      "test_name": "TimescaleDB: Network Latency Matrix",
+      "status": "passed",
+      "details": "Returned valid data structure",
+      "timestamp": "2025-08-29T16:34:31.425343"
+    },
+    {
+      "test_name": "TimescaleDB: Cost Analysis",
+      "status": "passed",
+      "details": "Returned valid data structure",
+      "timestamp": "2025-08-29T16:34:31.430891"
+    },
+    {
+      "test_name": "TimescaleDB: Business Value Metrics",
+      "status": "passed",
+      "details": "Returned valid data structure",
+      "timestamp": "2025-08-29T16:34:31.434023"
+    },
+    {
+      "test_name": "TimescaleDB: Security Events Summary",
+      "status": "passed",
+      "details": "Returned valid data structure",
+      "timestamp": "2025-08-29T16:34:31.437576"
+    },
+    {
+      "test_name": "TimescaleDB: Incident Analysis",
+      "status": "passed",
+      "details": "Returned valid data structure",
+      "timestamp": "2025-08-29T16:34:31.440382"
+    },
+    {
+      "test_name": "API: Value Metrics - Current Month",
+      "status": "failed",
+      "details": "",
+      "timestamp": "2025-08-29T16:34:31.444663"
+    },
+    {
+      "test_name": "API: Dashboard Data - CEO Level",
+      "status": "passed",
+      "details": "Valid response structure",
+      "timestamp": "2025-08-29T16:34:31.453435"
+    },
+    {
+      "test_name": "API: Dashboard Data - CIO Level",
+      "status": "passed",
+      "details": "Valid response structure",
+      "timestamp": "2025-08-29T16:34:31.459361"
+    },
+    {
+      "test_name": "API: Fiscal Analysis - Q1",
+      "status": "passed",
+      "details": "Valid response structure",
+      "timestamp": "2025-08-29T16:34:31.476641"
+    },
+    {
+      "test_name": "API: Infrastructure Overview",
+      "status": "passed",
+      "details": "Valid response structure",
+      "timestamp": "2025-08-29T16:34:31.546445"
+    },
+    {
+      "test_name": "Error Handling: Invalid Neo4j Query",
+      "status": "failed",
+      "details": "No error handling",
+      "timestamp": "2025-08-29T16:34:32.079561"
+    },
+    {
+      "test_name": "Error Handling: Invalid Time Range TimescaleDB",
+      "status": "failed",
+      "details": "No error handling",
+      "timestamp": "2025-08-29T16:34:32.079605"
+    },
+    {
+      "test_name": "Error Handling: Empty Service Name",
+      "status": "failed",
+      "details": "No error handling",
+      "timestamp": "2025-08-29T16:34:32.080780"
+    },
+    {
+      "test_name": "Performance: Neo4j Query Performance",
+      "status": "passed",
+      "details": "Performance test completed",
+      "timestamp": "2025-08-29T16:34:32.080895"
+    },
+    {
+      "test_name": "Performance: TimescaleDB Query Performance",
+      "status": "passed",
+      "details": "Performance test completed",
+      "timestamp": "2025-08-29T16:34:32.080941"
+    },
+    {
+      "test_name": "Performance: Concurrent API Requests",
+      "status": "passed",
+      "details": "Performance test completed",
+      "timestamp": "2025-08-29T16:34:32.080985"
+    }
+  ],
+  "summary": {
+    "total_tests": 26,
+    "passed": 15,
+    "failed": 11,
+    "errors": [
+      "Neo4j: EKS Clusters with Services: Invalid data structure",
+      "Neo4j: Service Dependency Map: Invalid data structure",
+      "Neo4j: Database Connections: Invalid data structure",
+      "Neo4j: Cost Optimization Candidates: Invalid data structure",
+      "Neo4j: Critical Path Analysis: Invalid data structure",
+      "Neo4j: Network Latency Heatmap Data: Invalid data structure",
+      "TimescaleDB: Database Performance Metrics: Invalid data structure",
+      "API: Value Metrics - Current Month: ",
+      "Error Handling: Invalid Neo4j Query: No error handling",
+      "Error Handling: Invalid Time Range TimescaleDB: No error handling",
+      "Error Handling: Empty Service Name: No error handling"
+    ],
+    "success_rate": "57.7%"
+  },
+  "completed_at": "2025-08-29T16:34:32.087768"
+}
