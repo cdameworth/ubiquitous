@@ -17,11 +17,11 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                    Ubiquitous Platform                      │
 ├─────────────────────────────────────────────────────────────┤
-│  Frontend (React) ←→ API (FastAPI) ←→ Graph (Neo4j)        │
-│        ↓                    ↓               ↓              │
-│  Visualization        Time-Series    Cache (Redis)         │
-│                      (TimescaleDB)         ↓              │  
-│                           ↓          Data Generator        │
+│  Frontend (React) ←→ API (FastAPI) ←→ Graph (Neo4j)         │
+│        ↓                    ↓               ↓               │
+│  Visualization        Time-Series    Cache (Redis)          │
+│                      (TimescaleDB)         ↓                │  
+│                           ↓          Data Generator         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
